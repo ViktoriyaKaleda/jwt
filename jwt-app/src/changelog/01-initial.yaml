@@ -1,0 +1,51 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Viktoriya Kaleda
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: user_pkey
+            name: id
+            type: SERIAL
+        - column:
+            name: username
+            type: VARCHAR
+        - column:
+            name: password
+            type: VARCHAR
+        - column:
+            name: role
+            type: VARCHAR
+        tableName: user
+- changeSet:
+    id: 2
+    author: Viktoriya Kaleda
+    changes:
+    - addUniqueConstraint:
+        columnNames: username
+        constraintName: user_username_key
+        tableName: user
+        schemaName: public
+        validate: true
+- changeSet:
+    id: 3
+    author: Viktoriya Kaleda
+    changes:
+    - insert:
+        columns:
+        - column:
+            name: username
+            value: admin
+        - column:
+            name: password
+            value: sha256$jXXiLxIv$a421c3032a908fa94d671a04c39aab4bd37bd56f573d7c75df34d35ab15c530a
+        - column:
+            name: role
+            value: ADMIN
+        schemaName: public
+        tableName: user

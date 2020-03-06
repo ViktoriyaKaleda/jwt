@@ -1,0 +1,41 @@
+version: "3.5"
+
+services:
+  jwt-app:
+    build:
+      context: .
+      dockerfile: docker/jwt.Dockerfile
+    command: gunicorn --bind 0.0.0.0:8000 --reload -w 1 --log-level debug app:configure_app()
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    volumes:
+      - ./jwt-app/src:/app
+    ports:
+      - 8000:8000
+
+  postgres:
+    image: postgres:12-alpine
+    restart: 'no'
+    env_file:
+      - .env
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5433:${POSTGRES_PORT}
+
+  migrator:
+    build:
+      context: .
+      dockerfile: docker/migrator.Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    restart: 'no'
+    volumes:
+      - ./jwt-app/src/changelog:/liquibase/changelog
+
+volumes:
+  postgres: {}

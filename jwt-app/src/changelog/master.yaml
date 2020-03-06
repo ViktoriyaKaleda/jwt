@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: 01-initial.yaml
+  - include:
+      file: 02-add-token.yaml

@@ -1,0 +1,39 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Viktoriya Kaleda
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: token_pkey
+            name: id
+            type: SERIAL
+        - column:
+            name: username
+            type: VARCHAR
+        - column:
+            name: expired_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: refresh_token
+            type: VARCHAR
+        tableName: token
+- changeSet:
+    id: 2
+    author: Viktoriya Kaleda
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: username
+        baseTableName: token
+        constraintName: token_username_fkey
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: NO ACTION
+        referencedColumnNames: username
+        referencedTableName: user
+        validate: true
